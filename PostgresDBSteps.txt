@@ -78,7 +78,7 @@ CREATE TRIGGER update_objects_updated_at BEFORE UPDATE ON storage_objects
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 
-Output should like this:
+Output should be like this:
          List of relations
  Schema |       Name        | Type  |  Owner
 --------+--------------------+-------+----------
