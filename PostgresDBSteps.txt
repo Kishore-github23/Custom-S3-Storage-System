@@ -1,0 +1,87 @@
+Postgres Database Creation Steps:
+Step 1: Create your project database
+
+Inside the postgres=# shell, run:
+
+CREATE DATABASE s3_storage;
+
+
+Then connect to it:
+
+\c s3_storage;
+
+
+Your prompt will now change to:
+
+s3_storage=#
+
+
+Step 2: Create the required tables
+
+-- Users table
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    full_name VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Buckets table
+CREATE TABLE buckets (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    owner_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    is_public BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT bucket_name_format CHECK (name ~ '^[a-z0-9][a-z0-9-]*[a-z0-9]$')
+);
+
+-- Storage objects table
+CREATE TABLE storage_objects (
+    id BIGSERIAL PRIMARY KEY,
+    bucket_id BIGINT NOT NULL REFERENCES buckets(id) ON DELETE CASCADE,
+    object_key VARCHAR(1024) NOT NULL,
+    size BIGINT NOT NULL,
+    content_type VARCHAR(255),
+    etag VARCHAR(255),
+    storage_path TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(bucket_id, object_key)
+);
+
+-- Indexes for performance
+CREATE INDEX idx_buckets_owner ON buckets(owner_id);
+CREATE INDEX idx_objects_bucket ON storage_objects(bucket_id);
+CREATE INDEX idx_objects_key ON storage_objects(object_key);
+
+-- Updated at trigger function
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Apply triggers
+CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_buckets_updated_at BEFORE UPDATE ON buckets
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_objects_updated_at BEFORE UPDATE ON storage_objects
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+
+Output should like this:
+         List of relations
+ Schema |       Name        | Type  |  Owner
+--------+--------------------+-------+----------
+ public | users              | table | postgres
+ public | buckets            | table | postgres
+ public | storage_objects    | table | postgres
