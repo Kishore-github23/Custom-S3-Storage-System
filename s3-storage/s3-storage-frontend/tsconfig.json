@@ -16,11 +16,11 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2020",
-    "module": "es2020",
+
+    /* ✅ Clean modern config - let Angular CLI set target/module automatically */
     "lib": [
-      "es2020",
-      "dom"
+      "ES2022",
+      "DOM"
     ]
   },
   "angularCompilerOptions": {
