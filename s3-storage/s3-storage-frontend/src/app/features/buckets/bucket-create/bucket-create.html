@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Create New Bucket</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="bucketForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Bucket Name</mat-label>
+      <input matInput formControlName="name" placeholder="my-bucket-name">
+      <mat-hint>Lowercase letters, numbers, and hyphens only (3-63 characters)</mat-hint>
+      <mat-error *ngIf="bucketForm.get('name')?.hasError('required')">
+        Bucket name is required
+      </mat-error>
+      <mat-error *ngIf="bucketForm.get('name')?.hasError('pattern')">
+        Invalid bucket name format
+      </mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isPublic" class="full-width">
+      Make bucket public
+    </mat-checkbox>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" 
+          [disabled]="!bucketForm.valid || loading">
+    Create
+  </button>
+</mat-dialog-actions>

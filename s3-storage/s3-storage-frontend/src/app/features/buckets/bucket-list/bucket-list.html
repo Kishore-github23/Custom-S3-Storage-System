@@ -1,0 +1,62 @@
+<!-- Remove the mat-toolbar section -->
+
+<div class="container">
+  <div class="header">
+    <h1>My Buckets</h1>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Create Bucket
+    </button>
+  </div>
+
+  <!-- Rest of the component remains the same -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="bucket-grid" *ngIf="!loading">
+    <mat-card *ngFor="let bucket of buckets" class="bucket-card" (click)="viewBucket(bucket)">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>folder</mat-icon>
+        <mat-card-title>{{ bucket.name }}</mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon class="visibility-icon">{{ bucket.isPublic ? 'public' : 'lock' }}</mat-icon>
+          {{ bucket.isPublic ? 'Public' : 'Private' }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="bucket-info">
+          <div class="info-item">
+            <mat-icon>insert_drive_file</mat-icon>
+            <span>{{ bucket.objectCount }} objects</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{ bucket.createdAt | date:'short' }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <mat-icon>folder_open</mat-icon>
+          Open
+        </button>
+        <button mat-button color="warn" (click)="deleteBucket(bucket, $event)">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="empty-state" *ngIf="buckets.length === 0">
+      <mat-icon>folder_off</mat-icon>
+      <h2>No buckets yet</h2>
+      <p>Create your first bucket to start storing files</p>
+      <button mat-raised-button color="primary" (click)="openCreateDialog()">
+        Create Bucket
+      </button>
+    </div>
+  </div>
+</div>

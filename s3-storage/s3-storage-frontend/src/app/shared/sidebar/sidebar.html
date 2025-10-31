@@ -1,0 +1,40 @@
+<div class="sidebar-container" [class.collapsed]="!isExpanded">
+  <!-- Toggle Button -->
+  <div class="sidebar-header">
+    <button mat-icon-button (click)="toggleSidebar()" class="toggle-btn">
+      <mat-icon>{{ isExpanded ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Main Navigation -->
+  <div class="sidebar-content">
+    <nav class="nav-section">
+      <mat-nav-list>
+        <a mat-list-item 
+           *ngFor="let item of menuItems"
+           [routerLink]="item.route"
+           [class.active]="isActive(item.route)"
+           [matTooltip]="!isExpanded ? item.label : ''"
+           matTooltipPosition="right">
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+          <span matListItemTitle *ngIf="isExpanded">{{ item.label }}</span>
+        </a>
+      </mat-nav-list>
+    </nav>
+  </div>
+
+  <!-- Footer Storage Info -->
+  <div class="sidebar-footer" *ngIf="isExpanded">
+    <div class="storage-info">
+      <div class="storage-header">
+        <mat-icon>cloud_queue</mat-icon>
+        <span>Storage Used</span>
+      </div>
+      <div class="storage-bar">
+        <div class="storage-progress" style="width: 0%"></div>
+      </div>
+      <div class="storage-text">0 GB of 10 GB</div>
+      <p class="storage-note">Storage metrics coming in Phase 2</p>
+    </div>
+  </div>
+</div>

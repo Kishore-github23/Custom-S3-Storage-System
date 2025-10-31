@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>Upload File</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="uploadForm">
+    <div class="file-input-container">
+      <input type="file" #fileInput (change)="onFileSelected($event)" 
+             style="display: none;">
+      <button mat-raised-button type="button" (click)="fileInput.click()" 
+              [disabled]="uploading">
+        <mat-icon>attach_file</mat-icon>
+        Choose File
+      </button>
+      <span class="file-name" *ngIf="selectedFile">
+        {{ selectedFile.name }} ({{ formatBytes(selectedFile.size) }})
+      </span>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Object Key (Name)</mat-label>
+      <input matInput formControlName="objectKey" placeholder="file.txt" 
+             [disabled]="uploading">
+      <mat-hint>The name/path for this file in the bucket</mat-hint>
+      <mat-error *ngIf="uploadForm.get('objectKey')?.hasError('required')">
+        Object key is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-progress-bar mode="determinate" [value]="uploadProgress" 
+                      *ngIf="uploading"></mat-progress-bar>
+    <div class="progress-text" *ngIf="uploading">
+      Uploading... {{ uploadProgress }}%
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="uploading">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" 
+          [disabled]="!uploadForm.valid || uploading">
+    Upload
+  </button>
+</mat-dialog-actions>
