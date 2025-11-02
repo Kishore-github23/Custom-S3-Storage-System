@@ -45,4 +45,65 @@ export class ObjectService {
   deleteObject(bucketName: string, objectKey: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${bucketName}/objects/${objectKey}`);
   }
+
+  // Helper method to get file extension
+  getFileExtension(filename: string): string {
+    const parts = filename.split('.');
+    return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : '';
+  }
+
+  // Helper method to check if file type is allowed
+  isAllowedFileType(file: File, allowedTypes?: string[]): boolean {
+    if (!allowedTypes || allowedTypes.length === 0) {
+      return true; // Allow all types if no restriction
+    }
+    
+    return allowedTypes.some(type => {
+      if (type.endsWith('/*')) {
+        // Check category (e.g., 'image/*')
+        const category = type.split('/')[0];
+        return file.type.startsWith(category + '/');
+      }
+      return file.type === type;
+    });
+  }
+
+  // Helper method to check file size
+  isFileSizeValid(file: File, maxSizeInMB: number = 500): boolean {
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    return file.size <= maxSizeInBytes;
+  }
+
+  // Helper method to sanitize object key
+  sanitizeObjectKey(key: string): string {
+    // Remove leading/trailing whitespace
+    key = key.trim();
+    
+    // Replace multiple slashes with single slash
+    key = key.replace(/\/+/g, '/');
+    
+    // Remove leading slash
+    if (key.startsWith('/')) {
+      key = key.substring(1);
+    }
+    
+    return key;
+  }
+
+  // Helper method to validate object key
+  validateObjectKey(key: string): { valid: boolean; error?: string } {
+    if (!key || key.trim().length === 0) {
+      return { valid: false, error: 'Object key is required' };
+    }
+    
+    if (key.length > 1024) {
+      return { valid: false, error: 'Object key must not exceed 1024 characters' };
+    }
+    
+    if (key.includes('//')) {
+      return { valid: false, error: 'Object key cannot contain consecutive slashes' };
+    }
+    
+    return { valid: true };
+  }
 }

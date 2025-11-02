@@ -31,4 +31,29 @@ export class BucketService {
   updateVisibility(name: string, isPublic: boolean): Observable<Bucket> {
     return this.http.patch<Bucket>(`${this.apiUrl}/${name}`, { isPublic });
   }
+
+  // Helper method to check if bucket name is valid
+  validateBucketName(name: string): { valid: boolean; error?: string } {
+    if (!name) {
+      return { valid: false, error: 'Bucket name is required' };
+    }
+    
+    if (name.length < 3) {
+      return { valid: false, error: 'Bucket name must be at least 3 characters' };
+    }
+    
+    if (name.length > 63) {
+      return { valid: false, error: 'Bucket name must not exceed 63 characters' };
+    }
+    
+    const bucketNameRegex = /^[a-z0-9][a-z0-9-]*[a-z0-9]$/;
+    if (!bucketNameRegex.test(name)) {
+      return { 
+        valid: false, 
+        error: 'Bucket name must start and end with a lowercase letter or number, and contain only lowercase letters, numbers, and hyphens' 
+      };
+    }
+    
+    return { valid: true };
+  }
 }
