@@ -8,6 +8,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BucketService } from '../../../core/services/bucket.service';
+import { StorageService } from '../../../core/services/storage.service';
 import { Bucket } from '../../../core/models/bucket.model';
 import { BucketCreateComponent } from '../bucket-create/bucket-create';
 
@@ -26,12 +27,13 @@ import { BucketCreateComponent } from '../bucket-create/bucket-create';
   templateUrl: './bucket-list.html',
   styleUrls: ['./bucket-list.css']
 })
-export class BucketListComponent implements OnInit {
+export class BucketList implements OnInit {
   buckets: Bucket[] = [];
   loading = false;
 
   constructor(
     private bucketService: BucketService,
+    private storageService: StorageService,
     private router: Router,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
@@ -39,6 +41,8 @@ export class BucketListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadBuckets();
+    this.storageService.clearBreadcrumbs();
+    this.storageService.setCurrentBucket(null);
   }
 
   loadBuckets(): void {
@@ -47,6 +51,13 @@ export class BucketListComponent implements OnInit {
       next: (buckets) => {
         this.buckets = buckets;
         this.loading = false;
+        
+        // Update storage stats
+        const totalObjects = buckets.reduce((sum, bucket) => sum + (bucket.objectCount || 0), 0);
+        this.storageService.updateStorageStats({
+          totalBuckets: buckets.length,
+          totalObjects: totalObjects
+        });
       },
       error: (error) => {
         this.loading = false;
@@ -68,6 +79,7 @@ export class BucketListComponent implements OnInit {
   }
 
   viewBucket(bucket: Bucket): void {
+    this.storageService.setCurrentBucket(bucket.name);
     this.router.navigate(['/buckets', bucket.name, 'objects']);
   }
 
@@ -88,10 +100,6 @@ export class BucketListComponent implements OnInit {
   }
 
   formatBytes(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    return this.storageService.formatBytes(bytes);
   }
 }
