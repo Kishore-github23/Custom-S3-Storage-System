@@ -53,6 +53,8 @@ export class AuthService {
     };
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSubject.next(user);
+    console.log('AuthResponse:', response);
+
   }
 
   private loadUserFromStorage(): void {
