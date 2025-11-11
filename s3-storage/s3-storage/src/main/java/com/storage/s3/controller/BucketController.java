@@ -13,7 +13,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/buckets")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class BucketController {
     
     private final BucketService bucketService;
@@ -29,7 +28,10 @@ public class BucketController {
     
     @GetMapping
     public ResponseEntity<List<BucketDTO>> listBuckets() {
-        return ResponseEntity.ok(bucketService.listBuckets());
+        System.out.println("🔍 BucketController.listBuckets() called"); // Add logging
+        List<BucketDTO> buckets = bucketService.listBuckets();
+        System.out.println("📦 Found " + buckets.size() + " buckets"); // Add logging
+        return ResponseEntity.ok(buckets);
     }
     
     @GetMapping("/{name}")

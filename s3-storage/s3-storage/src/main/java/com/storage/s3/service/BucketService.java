@@ -57,7 +57,11 @@ public class BucketService {
     
     public List<BucketDTO> listBuckets() {
         User currentUser = getCurrentUser();
+        System.out.println("📧 Current user email: " + currentUser.getEmail());
+        System.out.println("🆔 Current user ID: " + currentUser.getId());
+        
         List<Bucket> buckets = bucketRepository.findByOwnerId(currentUser.getId());
+        System.out.println("📦 Found " + buckets.size() + " buckets");
         
         return buckets.stream()
                 .map(bucket -> {

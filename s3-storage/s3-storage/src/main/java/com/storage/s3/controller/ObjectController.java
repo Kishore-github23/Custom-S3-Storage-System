@@ -17,7 +17,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/buckets/{bucketName}/objects")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed-origins}")
 public class ObjectController {
     
     private final ObjectService objectService;
