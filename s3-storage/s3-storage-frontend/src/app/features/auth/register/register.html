@@ -1,8 +1,12 @@
 <div class="register-container">
   <mat-card class="register-card">
-    <mat-card-header>
+    <div class="register-logo-container">
+      <img src="/assets/images/logo-v4.png" alt="Bucketra Logo" class="register-logo">
+    </div>
+
+    <mat-card-header class="register-header">
       <mat-card-title>Create Account</mat-card-title>
-      <mat-card-subtitle>Register for S3 Storage System</mat-card-subtitle>
+      <mat-card-subtitle>Let’s Build Your First Bucket!</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -52,7 +56,7 @@
           {{ errorMessage }}
         </div>
 
-        <button mat-raised-button color="primary" type="submit" 
+        <button mat-raised-button color="primary" type="submit"
                 [disabled]="!registerForm.valid || loading" class="full-width">
           <span *ngIf="!loading">Register</span>
           <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>

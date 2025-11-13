@@ -3,36 +3,71 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #FFFDF2;
 }
 
 .register-card {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
+  width: 400px;
+  padding: 30px 25px 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  text-align: center;
+}
+
+.register-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.register-logo {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  margin-top: -10px;
+}
+
+.register-header mat-card-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 5px;
+  display: flex;
+}
+
+.register-header mat-card-subtitle {
+  font-size: 0.95rem;
+  margin-left: 60px;
+  color: #666;
+  margin-bottom: 10px;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
+}
+
+
+.login-link {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.login-link a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
 }
 
 .error-message {
   color: #f44336;
   margin-bottom: 15px;
   text-align: center;
-}
-
-.login-link {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.login-link a {
-  color: #667eea;
-  text-decoration: none;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
 }

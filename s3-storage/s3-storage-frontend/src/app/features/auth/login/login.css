@@ -1,15 +1,48 @@
+.background-image {
+  flex: 1;
+  width: 50%;
+  height: 80vh;
+  margin-left: 200px;
+  margin-top: 130px;
+  background-size: cover; /* fills the space nicely */
+  background-position: left center; /* keeps your logo visible */
+}
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #FFFDF2;
+  background-image: none;
 }
 
 .login-card {
   width: 100%;
   max-width: 400px;
   padding: 20px;
+  background-color: #fff;
+  margin-right: 150px;
+}
+
+.login-card mat-card-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 10px;
+  display: flex;
+}
+
+.login-card mat-card-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin-left: 60px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.login-card mat-card-content {
+  margin-top: 5px;
 }
 
 .full-width {
