@@ -1,9 +1,10 @@
 .header-toolbar {
   position: sticky;
-  background-color:#0284C7;
+  background-color:#05294e;
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 11vh;
 }
 
 .toolbar-content {
@@ -18,6 +19,8 @@
 .logo-section {
   display: flex;
   align-items: center;
+  margin-top: 8px;
+  margin-left: 10px;
   gap: 12px;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -27,11 +30,12 @@
   opacity: 0.8;
 }
 
-.logo-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-  color: #F9FAFB;
+.register-logo {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  margin-top: -10px;
 }
 
 .app-name {
@@ -63,6 +67,7 @@
 
 .user-info {
   display: flex;
+  width: 100%;
   align-items: center;
   gap: 12px;
 }
@@ -76,7 +81,7 @@
   font-size: 36px;
   width: 36px;
   height: 36px;
-  color: #F9FAFB;
+  color: gradient(#667eea, #764ba2);
 }
 
 .user-details {
@@ -88,8 +93,8 @@
 
 .user-name {
   font-size: 14px;
-  font-weight: 500;
-  color: #F9FAFB;
+  font-weight: 550;
+  color: gradient(#ffffff, #dddddd);
   line-height: 1.2;
 }
 
@@ -100,7 +105,7 @@
 }
 
 .dropdown-icon {
-  color: #F9FAFB;
+  color: gradient(#ffffff, #dddddd);
 }
 
 /* Menu Styles */
